@@ -3,30 +3,21 @@ import { StyleSheet, Text, View } from 'react-native';
 import PlayerLabel from './ui/PlayerLabel';
 import BoardMatrix from './ui/BoardMatrix';
 import ColumnSelector from './ui/ColumnSelector';
+import Players from './players';
 
 export default class App extends Component {
   
   state = {
-    activePlayerId: 1
+    currentPlayerId: 2
   }
 
   render() {
+
+    const currentPlayer = Players[this.state.currentPlayerId];
+
     return (
       <View style={styles.container}>
-        <View style={styles.labels}> 
-          <PlayerLabel 
-            id={1} 
-            activeColor={'red'} 
-            name={'Player 1'} 
-            isActive={this.state.activePlayerId === 1}/> 
-
-          <PlayerLabel 
-            id={2} 
-            activeColor={'yellow'} 
-            name={'Player 2'} 
-            isActive={this.state.activePlayerId === 2}/> 
-        </View> 
-
+        <PlayerLabel {...currentPlayer} /> 
         <BoardMatrix style={styles.board}/>
         <ColumnSelector />
       </View>
@@ -40,12 +31,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'stretch',
     margin: 16,
-  },
-  
-  labels: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 
   board: {

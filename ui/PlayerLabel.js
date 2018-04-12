@@ -5,7 +5,8 @@ import { FontAwesome } from '@expo/vector-icons';
 export default class PlayerLabel extends Component {
 
   render() {
-    const color = this.props.isActive? this.props.activeColor : 'gray';
+
+    const {color, name} = this.props;
 
     return (
       <View style={styles.container}>
@@ -26,10 +27,9 @@ export default class PlayerLabel extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'center'
   },
 
   text: {
