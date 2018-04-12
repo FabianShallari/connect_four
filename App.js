@@ -19,7 +19,7 @@ export default class App extends Component {
       <View style={styles.container}>
         <PlayerLabel {...currentPlayer} /> 
         <BoardMatrix style={styles.board}/>
-        <ColumnSelector />
+        <ColumnSelector {...currentPlayer}/>
       </View>
     );
   }

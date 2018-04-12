@@ -6,7 +6,11 @@ const columns = 7;
 
 export default class ColumnSelector extends Component {
   
+  
+
   render() {
+    const { color } = this.props;
+
     let row = [];
     for (let columnIndex = 0; columnIndex < columns; columnIndex++) {
       const isColumnFull = Math.random() < 0.5 ? true : false;
@@ -18,7 +22,7 @@ export default class ColumnSelector extends Component {
           style={{padding: 8}}>
           <FontAwesome 
             name={'plus'}
-            color={'blue'} 
+            color={color} 
             size={32}
             style={styles.icon}
           />
