@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PlayerLabel from './ui/PlayerLabel';
 import BoardMatrix from './ui/BoardMatrix';
+import ColumnSelector from './ui/ColumnSelector';
 
 export default class App extends Component {
   
@@ -27,6 +28,7 @@ export default class App extends Component {
         </View> 
 
         <BoardMatrix />
+        <ColumnSelector />
       </View>
     );
   }
@@ -36,13 +38,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'stretch',
+    margin: 16,
   },
   
   labels: {
     flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'space-around',
-    marginBottom: 32,
   },
+
+  board: {
+    marginTop: 32,
+    marginBottom: 32
+  }
 });
