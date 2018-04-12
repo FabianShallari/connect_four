@@ -31,10 +31,8 @@ export default class BoardMatrix extends Component {
     }
 
     return (
-      <View>
-        <View>
+      <View style={this.props.style}>
         { board }
-        </View>
       </View>
     )
   }

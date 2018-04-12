@@ -27,7 +27,7 @@ export default class App extends Component {
             isActive={this.state.activePlayerId === 2}/> 
         </View> 
 
-        <BoardMatrix />
+        <BoardMatrix style={styles.board}/>
         <ColumnSelector />
       </View>
     );
