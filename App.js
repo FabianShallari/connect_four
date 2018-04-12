@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import PlayerLabel from './ui/PlayerLabel';
 
-export default class App extends React.Component {
+export default class App extends Component {
+  
+  state = {
+    activePlayerId: 1
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
+      <View style={styles.container}> 
+        <PlayerLabel 
+          id={1} 
+          activeColor={'blue'} 
+          name={'Player 1'} 
+          isActive={this.state.activePlayerId === 1}/> 
+
+        <PlayerLabel 
+          id={2} 
+          activeColor={'green'} 
+          name={'Player 2'} 
+          isActive={this.state.activePlayerId === 2}/> 
+      
       </View>
     );
   }
@@ -15,9 +30,9 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'row',
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
   },
 });
