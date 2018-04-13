@@ -49,24 +49,29 @@ export default class GameLogic {
   _checkHorizontal = () => {
     const { cells } = this.state;
 
-    return matrixHasRepetitions(transposeMatrix(cells), { numberOfRepetitions: 4, filter: ['gray'] });
+    return this._checkFourRepetitions(transposeMatrix(cells));
   }
 
   _checkVertical = () => {
     const { cells } = this.state;
 
-    return matrixHasRepetitions(cells, { numberOfRepetitions: 4, filter: ['gray'] });
+    return this._checkFourRepetitions(cells);
   }
 
   _checkDiagonal = () => {
     const { cells } = this.state;
-    
+
     // check top-left => bottom-right diagonals
-    return matrixHasRepetitions(matrixDiagonals(cells), { numberOfRepetitions: 4, filter: ['gray'] })
+    return this._checkFourRepetitions(matrixDiagonals(cells))
     ||
     // check bottom-left => top-right diagonals
-    matrixHasRepetitions(matrixDiagonals(rotateMatrix(cells)), { numberOfRepetitions: 4, filter: ['gray'] });
+    this._checkFourRepetitions(matrixDiagonals(rotateMatrix(cells)));
   }
+
+  _checkFourRepetitions = matrix => matrixHasRepetitions(matrix, {
+    numberOfRepetitions: 4,
+    filter: ['gray']
+  })
   
   playNextTurn = columnIndex => {
     const { currentPlayerId } = this.state;
