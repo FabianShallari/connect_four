@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
     justifyContent: 'center',
-    alignItems: 'stretch',
+    alignItems: 'center',
     padding: 16,
   }
 });
