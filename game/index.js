@@ -20,10 +20,6 @@ export default class Game {
   _initializeCells = (columnsNumber, rowsNumber) => {
     return Array.from(Array(columnsNumber), () => Array(rowsNumber).fill('gray'))
   };
-
-  getState = () => {
-    return this.state;
-  }
   
   getFilledColumns = () => {
     return this.state.cells.map(column => column.every(cell => cell !== 'gray'));
