@@ -39,6 +39,42 @@ export const matrixHasRepetitions = (matrix, { numberOfRepetitions = 4, filter =
   return matrix.some(chunk => arrayHasRepetitions(chunk, { numberOfRepetitions , filter }));
 }
 
+// creates a new matrix which contains all the diagonals of the original matrix as rows
+// traversal is done top-left => bottom-right
+export const matrixDiagonals = matrix => {
+
+  const rows = matrix.length || 0;
+  const cols = matrix[0] ? matrix[0].length : 0;
+  
+  const lastColIndex = cols - 1;
+  const lastRowIndex = rows - 1;
+  const maxIndexSum = lastRowIndex + lastColIndex;
+
+  let diagonals = [];
+  for (let indexSum = 0; indexSum <= maxIndexSum; indexSum++) {
+    let diagonal = [];
+    
+    for (let rowIndex = rows - 1; rowIndex >= 0; rowIndex--) {
+        const columnIndex = indexSum - rowIndex;   
+        const element = matrix[rowIndex][columnIndex];
+
+        if (element) {
+          diagonal.push(element);
+        }
+    }
+
+    diagonals.push(diagonal);
+  }
+
+  return diagonals;
+}
+
+// returns a copy which is a rotated version of the original
+// rotation is 90 degrees clockwise
+export const rotateMatrix = matrix => {
+  return transposeMatrix(matrix).map(row => row.reverse());
+}
+
 // returns a copy which is a transposed matrix of the original,
 // i.e turns rows to columns and columns to rows
 export const transposeMatrix = matrix => {

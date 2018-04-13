@@ -1,4 +1,10 @@
-import { matrixHasRepetitions, transposeMatrix, createMatrix } from "./matrix_utils";
+import { 
+  matrixHasRepetitions,
+  transposeMatrix, 
+  createMatrix,
+  rotateMatrix,
+  matrixDiagonals,
+ } from "./matrix_utils";
 
 export const Players = {
   1: {
@@ -53,7 +59,13 @@ export default class GameLogic {
   }
 
   _checkDiagonal = () => {
-    return false;
+    const { cells } = this.state;
+    
+    // check top-left => bottom-right diagonals
+    return matrixHasRepetitions(matrixDiagonals(cells), { numberOfRepetitions: 4, filter: ['gray'] })
+    ||
+    // check bottom-left => top-right diagonals
+    matrixHasRepetitions(matrixDiagonals(rotateMatrix(cells)), { numberOfRepetitions: 4, filter: ['gray'] });
   }
   
   playNextTurn = columnIndex => {
