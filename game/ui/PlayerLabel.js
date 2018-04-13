@@ -18,7 +18,6 @@ export default class PlayerLabel extends Component {
         <FontAwesome name='circle' 
           size={32}
           color={color} 
-          style={styles.icon}
         />
       </View>
     );
