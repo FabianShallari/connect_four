@@ -1,54 +1,78 @@
-import Players from '../players';
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, Alert } from 'react-native';
+import PlayerLabel from './ui/PlayerLabel';
+import BoardMatrix from './ui/BoardMatrix';
+import ColumnSelector from './ui/ColumnSelector';
+import GameLogic, { GameStatus, Players } from './logic';
 
-export const GameStatus = {
-  playing: 0,
-  win: 1,
-  draw: 2
-}
-
-export default class Game {
+export default class Game extends Component {
   
-  constructor(columnsNumber = 7, rowsNumber = 6) {
-    
-    this.state = {
-      currentPlayerId: 1,
-      cells: this._initializeCells(columnsNumber, rowsNumber),
-      status: GameStatus.playing,
-    }
+  constructor(props) {
+    super(props);
+    this.game = new GameLogic();
+    this.state = this.game.state;
   }
 
-  _initializeCells = (columnsNumber, rowsNumber) => {
-    return Array.from(Array(columnsNumber), () => Array(rowsNumber).fill('gray'))
-  };
-  
-  getFilledColumns = () => {
-    return this.state.cells.map(column => column.every(cell => cell !== 'gray'));
-  }
+  render() {
 
-  isColumnFull = columnIndex => this.state.cells[columnIndex].every(cell => cell !== 'gray');
-
-  checkDraw = () => this.state.cells.every(column => column.every(cell => cell !== 'gray'));
-
-  checkWin = () => false;
-  
-  playNextTurn = columnIndex => {
     const { currentPlayerId } = this.state;
     const currentPlayer = Players[currentPlayerId];
 
-    // push disc (player.color) in the column 
-    const column = this.state.cells[columnIndex];
-    const lastEmptySlotIndex = column.lastIndexOf('gray');
-    column[lastEmptySlotIndex] = currentPlayer.color;
+    return (
+      <View style={styles.container}>
+        <PlayerLabel {...currentPlayer} /> 
+        <BoardMatrix cells={this.state.cells}/>
+        <ColumnSelector color={currentPlayer.color} 
+          filledColumns={this.game.getFilledColumns()}
+          onColumnSelected={this._onColumnSelected}
+        />
+        {this._showAlertIfNotPlaying()}
+      </View>
+    );
+  }
 
-    // check if win
-    if (this.checkWin()) {
-      this.state.status = GameStatus.win;
-    } else if (this.checkDraw()) {
-      // check if draw
-      this.state.status = GameStatus.draw;
-    } else {
-      // keep playing, switch player
-      this.state.currentPlayerId = currentPlayerId === 1 ? 2 : 1;
+  _showAlertIfNotPlaying = () => {
+    switch (this.state.status) {
+      case GameStatus.draw:
+        return Alert.alert(
+            'Game was drawn',
+            'But you can always restart again',
+            [
+              {text: 'Restart', onPress: this._restartGame},
+            ],
+            { cancelable: false }
+          );
+      case GameStatus.win:
+        return Alert.alert(
+          `Game was won by Player ${this.state.currentPlayerId}`,
+          `Better luck next time Player ${this.state.currentPlayerId === 1 ? 2 : 1}`,
+          [
+            {text: 'Restart', onPress: this._restartGame},
+          ],
+          { cancelable: false }
+        );
+      default:
+        return null;
     }
   }
+
+  _onColumnSelected = columnIndex => {
+    this.game.playNextTurn(columnIndex);
+    this.setState(this.game.state);
+  }
+
+  _restartGame = () => {
+    this.game = new GameLogic();
+    this.setState(this.game.state);
+  }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  }
+});
