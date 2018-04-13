@@ -34,44 +34,43 @@ export default class GameLogic {
     }
   }
 
+  getCells = () => this.state.cells;
+
   getFilledColumns = () => {
-    return this.state.cells.map(column => column.every(cell => cell !== 'gray'));
+    return this.getCells().map(column => column.every(cell => cell !== 'gray'));
   }
 
-  isColumnFull = columnIndex => this.state.cells[columnIndex].every(cell => cell !== 'gray');
+  isColumnFull = columnIndex => {
+    return this.getCells()[columnIndex].every(cell => cell !== 'gray')
+  }
 
-  checkDraw = () => this.state.cells.every(column => column.every(cell => cell !== 'gray'));
+  checkDraw = () => {
+    return this.getCells().every(column => column.every(cell => cell !== 'gray'));
+  }
 
   checkWin = () => {
     return this._checkHorizontal() || this._checkVertical() || this._checkDiagonal();
   };
   
   _checkHorizontal = () => {
-    const { cells } = this.state;
-
-    return this._checkFourRepetitions(transposeMatrix(cells));
+    return this._checkFourRepetitions(transposeMatrix(this.getCells()));
   }
 
   _checkVertical = () => {
-    const { cells } = this.state;
-
-    return this._checkFourRepetitions(cells);
+    return this._checkFourRepetitions(this.getCells());
   }
 
   _checkDiagonal = () => {
-    const { cells } = this.state;
-
     // check top-left => bottom-right diagonals
-    return this._checkFourRepetitions(matrixDiagonals(cells))
+    return this._checkFourRepetitions(matrixDiagonals(this.getCells()))
     ||
     // check bottom-left => top-right diagonals
-    this._checkFourRepetitions(matrixDiagonals(rotateMatrix(cells)));
+    this._checkFourRepetitions(matrixDiagonals(rotateMatrix(this.getCells())));
   }
 
-  _checkFourRepetitions = matrix => matrixHasRepetitions(matrix, {
-    numberOfRepetitions: 4,
-    filter: ['gray']
-  })
+  _checkFourRepetitions = matrix => {
+    return matrixHasRepetitions(matrix, { numberOfRepetitions: 4, filter: ['gray']});
+  }
   
   playNextTurn = columnIndex => {
     const { currentPlayerId } = this.state;
