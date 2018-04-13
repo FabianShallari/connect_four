@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import PlayerLabel from './ui/PlayerLabel';
 import BoardMatrix from './ui/BoardMatrix';
 import ColumnSelector from './ui/ColumnSelector';
 import Players from './players';
-import Game from './game';
+import Game, { GameStatus } from './game';
+
 
 export default class App extends Component {
   
@@ -27,8 +28,34 @@ export default class App extends Component {
           filledColumns={this.game.getFilledColumns()}
           onColumnSelected={this._onColumnSelected}
         />
+        {this._showAlertIfNotPlaying()}
       </View>
     );
+  }
+
+  _showAlertIfNotPlaying = () => {
+    switch (this.state.status) {
+      case GameStatus.draw:
+        return Alert.alert(
+            'Game was drawn',
+            'But you can always restart again',
+            [
+              {text: 'Restart', onPress: this._restartGame},
+            ],
+            { cancelable: false }
+          );
+      case GameStatus.win:
+        return Alert.alert(
+          `Game was won by Player ${this.state.currentPlayerId}`,
+          `Better luck next time Player ${this.state.currentPlayerId === 1 ? 2 : 1}`,
+          [
+            {text: 'Restart', onPress: this._restartGame},
+          ],
+          { cancelable: false }
+        );
+      default:
+        return null;
+    }
   }
 
   _onColumnSelected = columnIndex => {
