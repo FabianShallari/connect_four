@@ -1,6 +1,6 @@
 import Players from '../players';
 
-const GameStatus = {
+export const GameStatus = {
   playing: 0,
   win: 1,
   draw: 2
@@ -46,7 +46,7 @@ export default class Game {
 
     // check if win
     if (this.checkWin()) {
-      this.state.status = GameStatus.won;
+      this.state.status = GameStatus.win;
     } else if (this.checkDraw()) {
       // check if draw
       this.state.status = GameStatus.draw;
