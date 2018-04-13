@@ -1,3 +1,5 @@
+import { matrixHasRepetitions, transposeMatrix, createMatrix } from "./matrix_utils";
+
 export const Players = {
   1: {
     name: 'Player 1',
@@ -21,15 +23,11 @@ export default class GameLogic {
     
     this.state = {
       currentPlayerId: 1,
-      cells: this._initializeCells(columnsNumber, rowsNumber),
+      cells: createMatrix(columnsNumber, rowsNumber, 'gray'),
       status: GameStatus.playing,
     }
   }
 
-  _initializeCells = (columnsNumber, rowsNumber) => {
-    return Array.from(Array(columnsNumber), () => Array(rowsNumber).fill('gray'))
-  };
-  
   getFilledColumns = () => {
     return this.state.cells.map(column => column.every(cell => cell !== 'gray'));
   }
@@ -38,7 +36,25 @@ export default class GameLogic {
 
   checkDraw = () => this.state.cells.every(column => column.every(cell => cell !== 'gray'));
 
-  checkWin = () => false;
+  checkWin = () => {
+    return this._checkHorizontal() || this._checkVertical() || this._checkDiagonal();
+  };
+  
+  _checkHorizontal = () => {
+    const { cells } = this.state;
+
+    return matrixHasRepetitions(transposeMatrix(cells), { numberOfRepetitions: 4, filter: ['gray'] });
+  }
+
+  _checkVertical = () => {
+    const { cells } = this.state;
+
+    return matrixHasRepetitions(cells, { numberOfRepetitions: 4, filter: ['gray'] });
+  }
+
+  _checkDiagonal = () => {
+    return false;
+  }
   
   playNextTurn = columnIndex => {
     const { currentPlayerId } = this.state;
