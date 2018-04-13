@@ -12,7 +12,7 @@ export default class PlayerLabel extends Component {
       <View style={styles.container}>
         
         <Text style={[styles.text, {color: color}]}>
-          {this.props.name}
+          {name}
         </Text>
 
         <FontAwesome name='circle' 
