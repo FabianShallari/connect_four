@@ -3,23 +3,15 @@ import { Text, View, StyleSheet } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export default class Cell extends Component {
+  
   render() {
-    const name = this.props.isFilled ? 'circle' : 'circle-o';
-    const { color } =  this.props;
-
+    const { color, isFilled } =  this.props;
     return (
       <FontAwesome 
-        name={name}
+        name={isFilled? 'circle': 'circle-o'}
         size={32}
-        color={color} 
-        style={styles.icon}
+        color={color}
       />
     )
   }
 }
-
-const styles = StyleSheet.create({
-  icon: {
-    padding: 8,
-  }
-});

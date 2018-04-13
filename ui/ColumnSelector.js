@@ -2,37 +2,26 @@ import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-const columns = 7;
-
 export default class ColumnSelector extends Component {
-  
-  
 
   render() {
-    const { color } = this.props;
-
-    let row = [];
-    for (let columnIndex = 0; columnIndex < columns; columnIndex++) {
-      const isColumnFull = Math.random() < 0.5 ? true : false;
-      
-      row.push(
-        <TouchableOpacity 
-          key={columnIndex}
-          disabled={isColumnFull} 
-          style={{padding: 8}}>
-          <FontAwesome 
-            name={'plus'}
-            color={color} 
-            size={32}
-            style={styles.icon}
-          />
-        </TouchableOpacity>
-      );
-    }
+    const { filledColumns, color, onColumnSelected } = this.props;
 
     return (
-      <View style={[styles.container, this.props.style]}>
-        { row }
+      <View style={styles.container}>
+      {filledColumns.map((filledColumn, columnIndex) => 
+          <TouchableOpacity
+            key={columnIndex}
+            style={{padding: 8}}
+            disabled={filledColumn} 
+            onPress={() => onColumnSelected(columnIndex)} >
+            <FontAwesome 
+                name={'arrow-circle-up'}
+                color={filledColumn? 'transparent': color} 
+                size={32}
+              />
+          </TouchableOpacity>)
+      }
       </View>
     );
   }
@@ -41,7 +30,7 @@ export default class ColumnSelector extends Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center'
-  },
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });
